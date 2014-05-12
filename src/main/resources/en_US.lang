@@ -1,0 +1,46 @@
+nei.options.tooltipexpanded=Tooltip Expanded
+
+nei.options.tooltipexpanded.global=Enabled
+nei.options.tooltipexpanded.global.tip=Determines if the tooltip follows the below settings (Yes) or never appears (No)
+nei.options.tooltipexpanded.global.true=Yes
+nei.options.tooltipexpanded.global.true.tip=Tooltip will appear, following the settings below
+nei.options.tooltipexpanded.global.false=No
+nei.options.tooltipexpanded.global.false.tip=Tooltip will never appear
+
+nei.options.tooltipexpanded.pos=Change position
+nei.options.tooltipexpanded.pos.tip=Move the position of the tooltip
+nei.options.tooltipexpanded.pos.show=Shown
+nei.options.tooltipexpanded.pos.hide=Hidden
+
+nei.options.tooltipexpanded.other=General Items
+nei.options.tooltipexpanded.other.tip=Items without durability e.g. blocks, diamond, redstone torch
+nei.options.tooltipexpanded.other.true=Shown
+nei.options.tooltipexpanded.other.false=Hidden
+
+nei.options.tooltipexpanded.tools=Normal Tools
+nei.options.tooltipexpanded.tools.tip=All breakable tools without the unbreaking enchantment
+nei.options.tooltipexpanded.tools.0=Hidden
+nei.options.tooltipexpanded.tools.1=Shown without uses
+nei.options.tooltipexpanded.tools.2=Shown with uses
+
+nei.options.tooltipexpanded.armour=Normal Armour
+nei.options.tooltipexpanded.armour.tip=All breakable armour without the unbreaking enchantment
+nei.options.tooltipexpanded.armour.0=Hidden
+nei.options.tooltipexpanded.armour.1=Shown without uses
+nei.options.tooltipexpanded.armour.2=Shown with uses
+
+nei.options.tooltipexpanded.unbrtools=Unbreaking Tools
+nei.options.tooltipexpanded.unbrtools.tip=All tools with the unbreaking enchantment
+nei.options.tooltipexpanded.unbrtools.0=Hidden
+nei.options.tooltipexpanded.unbrtools.1=Shown without uses
+nei.options.tooltipexpanded.unbrtools.2=Shown with minimum uses
+nei.options.tooltipexpanded.unbrtools.3=Shown with expected uses
+nei.options.tooltipexpanded.unbrtools.4=Shown with both uses
+
+nei.options.tooltipexpanded.unbrarmour=Unbreaking Armour
+nei.options.tooltipexpanded.unbrarmour.tip=All armour with the unbreaking enchantment
+nei.options.tooltipexpanded.unbrarmour.0=Hidden
+nei.options.tooltipexpanded.unbrarmour.1=Shown without uses
+nei.options.tooltipexpanded.unbrarmour.2=Shown with minimum uses
+nei.options.tooltipexpanded.unbrarmour.3=Shown with expected uses
+nei.options.tooltipexpanded.unbrarmour.4=Shown with both uses

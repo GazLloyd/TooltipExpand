@@ -1,88 +1,129 @@
 package com.gazlloyd.tooltipexpanded;
 
-import codechicken.lib.config.ConfigTag;
-import codechicken.nei.KeyManager;
-import codechicken.nei.KeyManager.IKeyStateTracker;
-import codechicken.nei.NEIClientConfig;
 import codechicken.nei.guihook.GuiContainerManager;
+import com.gazlloyd.tooltipexpanded.config.Config;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static codechicken.lib.gui.GuiDraw.*;
 
-public class HUDRenderer implements IKeyStateTracker
+public class HUDRenderer
 {
-    @Override
-    public void tickKeyStates() {
-        if (KeyManager.keyStates.get("world.highlight_tips").down) {
-            ConfigTag tag = NEIClientConfig.getSetting("world.highlight_tips");
-            tag.setBooleanValue(!tag.getBooleanValue());
-        }
+
+    private static int checkItem(ItemStack item) {
+        int i=0;
+
+        //no held item == 0
+        if (item == null)
+            return 0;
+
+        //item stack is not damageable == 1
+        if (!item.isItemStackDamageable())
+            return 1;
+
+        //item is not enchanted with unbreaking == 2
+        if (!item.isItemEnchanted() || EnchantmentHelper.getEnchantmentLevel(Enchantment.unbreaking.effectId, item) == 0)
+            i=2;
+
+        //item is unbreaking == 3
+        if (EnchantmentHelper.getEnchantmentLevel(Enchantment.unbreaking.effectId, item) > 0)
+            i=4;
+
+        //if item is armour, add one
+        if (item.getItem() instanceof ItemArmor)
+            i++;
+
+        //something went wrong == 0
+        return i;
     }
+
+    public static int checkDisplay(int itemtype) {
+        switch (itemtype){
+            case 0: return 0;
+            case 1: return Config.getBoolean("tooltipexpanded.other") ? 1 : 0;
+            case 2: return Config.getInt("tooltipexpanded.tools");
+            case 3: return Config.getInt("tooltipexpanded.armour");
+            case 4: return Config.getInt("tooltipexpanded.unbrtools");
+            case 5: return Config.getInt("tooltipexpanded.unbrarmour");
+        }
+        return 0;
+
+    }
+
 
     public static void renderOverlay() {
         Minecraft mc = Minecraft.getMinecraft();
+
         if (mc.currentScreen == null &&
                 mc.theWorld != null &&
                 !mc.gameSettings.keyBindPlayerList.getIsKeyPressed() &&
-                NEIClientConfig.getBooleanSetting("world.highlight_tips") &&
                 mc.thePlayer.getHeldItem() != null ) {
             ItemStack item = mc.thePlayer.getHeldItem();
-            if (item == null)
+
+            int itemtype = checkItem(item);
+            if (itemtype == 0)
+                return;
+
+            int displaytype = checkDisplay(itemtype);
+            if (displaytype == 0)
                 return;
 
             ArrayList<String> text = new ArrayList<String>();
             text.add(item.getDisplayName());
 
-            //if the item is damageable, add another line for remaining durability
-            if (item.isItemStackDamageable()) {
+            if (itemtype > 1 && displaytype > 1) {
+                int uses = item.getMaxDamage() - item.getItemDamage();
+                int unbrlv;
 
-                int dur = item.getMaxDamage() - item.getItemDamage();
-                int expDur;
-
-                //if the item is enchantable, check for unbreaking, add another line to have expected uses
-                int unbrLv = 0;
-                if (item.isItemEnchanted()) {
-                    unbrLv = EnchantmentHelper.getEnchantmentLevel(Enchantment.unbreaking.effectId, item);
-
-                    //if unbrLv > 0, unbreaking enchantment of that level
-                    if (unbrLv > 0) {
-                        //if armour...
-                        if (item.getItem() instanceof ItemArmor) {
-                            //durability increased by 25/36/43%
-                            expDur = (int)(dur/(0.6+0.4/(unbrLv+1)));
+                switch (itemtype) {
+                    //normal tools and armour
+                    case 2:
+                    case 3:
+                        text.add("Uses left: "+uses);
+                        break;
+                    //unbreaking tools
+                    case 4:
+                        unbrlv = EnchantmentHelper.getEnchantmentLevel(Enchantment.unbreaking.effectId, item);
+                        switch (displaytype) {
+                            case 2:
+                                text.add("Minimum uses: "+uses);
+                                break;
+                            case 3:
+                                text.add("Expected uses: "+uses*(unbrlv+1));
+                                break;
+                            case 4:
+                            default:
+                                text.add("Expected uses: "+uses*(unbrlv+1));
+                                text.add("(Minimum uses: "+uses+")");
+                                break;
                         }
-                        //if not armour (i.e. a tool)...
-                        else {
-                            //durability increased by 100/200/300%
-                            expDur = dur*(unbrLv+1);
+                        break;
+                    //unbreaking armour
+                    case 5:
+                        unbrlv = EnchantmentHelper.getEnchantmentLevel(Enchantment.unbreaking.effectId, item);
+                        switch (displaytype) {
+                            case 2:
+                                text.add("Minimum uses: "+uses);
+                                break;
+                            case 3:
+                                text.add("Expected uses: "+(int)(uses/(0.6+0.4/(unbrlv+1))));
+                                break;
+                            case 4:
+                            default:
+                                text.add("Expected uses: "+(int)(uses/(0.6+0.4/(unbrlv+1))));
+                                text.add("(Minimum uses: "+uses+")");
+                                break;
                         }
-                        text.add("Expected uses: "+expDur);
-                        text.add("(Minimum: "+dur+")");
-                    }
-
-                    //no unbreaking
-                    else {
-                        text.add("Uses left: "+dur);
-                    }
-
-                }
-                //else item is not enchantable but is damageable
-                else {
-
-                    text.add("Uses left: "+dur);
                 }
             }
 
@@ -120,11 +161,11 @@ public class HUDRenderer implements IKeyStateTracker
 
     private static Point getPositioning() {
         return new Point(
-                100,
-                5000);
+                Config.getPosX(),
+                Config.getPosY()
+        );
     }
 
     public static void load() {
-        KeyManager.trackers.add(new HUDRenderer());
     }
 }

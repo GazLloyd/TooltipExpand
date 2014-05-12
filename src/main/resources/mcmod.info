@@ -11,6 +11,6 @@
   "credits": "Gaz Lloyd",
   "logoFile": "",
   "screenshots": [],
-  "dependencies": []
+  "dependencies": ["NotEnoughItems"]
 }
 ]
