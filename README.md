@@ -23,7 +23,7 @@ This is fully compatable with the [Magic Launcher](http://www.minecraftforum.net
 Compatability
 -------------
 Current release:
-*Minecraft: 1.7.2
-*Forge: Any 1.7.2 version (compiled for 1.7.2-10.12.1.1060)
-*CodeChickenCore: Any 1.7.2 version (compiled for 1.7.2-1.0.0)
-*NotEnoughItems: Any 1.7.2 version (compiled for 1.7.2-1.0.1)
+* Minecraft: 1.7.2
+* Forge: Any 1.7.2 version (compiled for 1.7.2-10.12.1.1060)
+* CodeChickenCore: Any 1.7.2 version (compiled for 1.7.2-1.0.0)
+* NotEnoughItems: Any 1.7.2 version (compiled for 1.7.2-1.0.1)
