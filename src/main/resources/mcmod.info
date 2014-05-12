@@ -1,0 +1,16 @@
+[
+{
+  "modid": "tooltipexpanded",
+  "name": "Tooltip Expanded",
+  "description": "Expands tooltips to have usage info",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authors": ["Gaz Lloyd"],
+  "credits": "Gaz Lloyd",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
